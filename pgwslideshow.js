@@ -1,5 +1,5 @@
 /**
- * PgwSlideshow - Version 2.0
+ * PgwSlideshow - Version 2.1
  *
  * Copyright 2014, Jonathan M. Piat
  * http://pgwjs.com - http://pagawa.com
@@ -44,6 +44,16 @@
         pgwSlideshow.touchFirstPosition = null;
         pgwSlideshow.touchListLastPosition = false;
         pgwSlideshow.window = $(window);
+        
+        // HTML entities to special chars (enabling HTML into attributes)
+        pgwSlideshow.escapeAttr = function(str){
+            str.replace("/&amp\;/g","&");
+            str.replace("/&lt\;/g","<");
+            str.replace("/&gt\;/g",">");
+            str.replace("/&quot\;/g",'"');
+            str.replace("/&\#039\;/g","'");
+            return str;
+        };
 
         // Init
         var init = function() {
@@ -310,13 +320,13 @@
             // Get title 
             var elementTitle = obj.find('img').attr('alt');
             if ((typeof elementTitle != 'undefined') && (elementTitle != '')) {
-                element.title = elementTitle;
+                element.title = pgwSlideshow.escapeAttr(elementTitle);
             }
             
             // Get description
             var elementDescription = obj.find('img').attr('data-description');
             if ((typeof elementDescription != 'undefined') && (elementDescription != '')) {
-                element.description = elementDescription;
+                element.description = pgwSlideshow.escapeAttr(elementDescription);
             }
 
             return element;
